@@ -1,0 +1,28 @@
+<!-- csv_upload/templates/csv_upload/hotel_detail.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Detail</title>
+</head>
+<body>
+    {% include './navbar.html' %} 
+    <h1>{{ hotel.name }}</h1>
+    <table>
+        <thead>
+            <tr>
+                {% for column in hotel|dictsort %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for column, value in hotel.items %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

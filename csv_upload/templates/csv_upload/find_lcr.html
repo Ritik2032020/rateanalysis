@@ -1,0 +1,13 @@
+
+{% block content %}
+{% include './navbar.html' %} 
+  <h1>Find LCR</h1>
+  <p>Select the column(s) to calculate LCR:</p>
+  
+  
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Calculate LCR">
+  </form>
+{% endblock %}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Running Link Styles */
+        .running-link-container {
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 20px;
+        }
+
+        .running-link {
+            display: inline-block;
+            animation: moveRight 10s linear infinite;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        @keyframes moveRight {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        /* Graph Styles */
+        h2 {
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    {% include './navbar.html' %} 
+    <div class="running-link-container">
+        <a href="{% url 'select_hotel' %}" class="running-link">Choose Best For You</a>
+    </div>
+
+    <!-- Add a form to select the graph type before displaying the graph -->
+    <h1>Select Graph Type</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="new_graph_type">Select Graph Type:</label>
+        <select name="new_graph_type">
+            <option value="bar" {% if graph_type == 'bar' %}selected{% endif %}>Bar Graph</option>
+            <option value="line" {% if graph_type == 'line' %}selected{% endif %}>Line Graph</option>
+            <!-- Add more options for other graph types if needed -->
+        </select>
+        <button type="submit">Change Graph Type</button>
+    </form>
+
+    <!-- Display the currently selected graph type -->
+    <p>Currently displaying: {{ graph_type }}</p>
+
+    <!-- Display grouped data in tabular form -->
+    <h1>GROUPED DATA</h1>
+    <table>
+        <!-- Add the table for displaying grouped data here -->
+        {% if data %}
+            <thead>
+                <tr>
+                    {% for column in data.0.keys %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in data %}
+                    {% for row in group %}
+                        <tr>
+                            {% for value in row.values %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        {% else %}
+            <p>No data available.</p>
+        {% endif %}
+    </table>
+
+    <!-- Conditionally display the selected graph type -->
+    {% if graph_type == 'bar' %}
+        <h2>Bar Graph</h2>
+        <!-- Add code to display the bar graph here -->
+        {% if image_base64 %}
+            <img src="data:image/png;base64,{{ image_base64 }}" alt="Bar Graph">
+        {% endif %}
+    {% elif graph_type == 'line' %}
+        <h2>Line Graph</h2>
+        <!-- Add code to display the line graph here -->
+        {% if line_chart %}
+            <!-- Add code to display the line chart here -->
+            <div>{{ line_chart }}</div>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

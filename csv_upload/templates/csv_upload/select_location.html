@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Hotel Location and Column</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Result Styles */
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% include './navbar.html' %} 
+    <h1>Select Hotel Location and Column</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="location">Select Location (City):</label>
+        <select name="location">
+            <option value="" selected>Select a city</option>
+            {% for location in locations %}
+                <option value="{{ location }}">{{ location }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Add the second dropdown for selecting a column -->
+        <label for="column">Select Column:</label>
+        <select name="column">
+            <option value="" selected>Select a column</option>
+            {% for column_name in columns %}
+                <option value="{{ column_name }}">{{ column_name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Find Hotels</button>
+    </form>
+
+    <!-- Display hotel names associated with the selected location -->
+    {% if selected_location %}
+        <h2>Hotels in {{ selected_location }}</h2>
+        <ul>
+            {% for hotel in hotels %}
+                <li><a href="{% url 'hotel_detail' hotel.id %}">{{ hotel.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- csv_upload/templates/csv_upload/upload_csv.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload CSV</title>
+</head>
+<body>
+    {% include './navbar.html' %} 
+    <h1>Upload a CSV File</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>

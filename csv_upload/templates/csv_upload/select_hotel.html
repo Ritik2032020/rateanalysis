@@ -1,0 +1,23 @@
+<!-- csv_upload/templates/csv_upload/select_hotel.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Hotel</title>
+</head>
+<body>
+    {% include './navbar.html' %} 
+    <h1>Select Hotel Location</h1>
+    <form method="post" action="{% url 'select_location' %}">
+        {% csrf_token %}
+        <label for="location">Select Location (City):</label>
+        <select name="location">
+            <option value="" selected>Select a city</option>
+            {% for location in locations %}
+                <option value="{{ location }}">{{ location }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Find Hotels</button>
+    </form>
+</body>
+</html>

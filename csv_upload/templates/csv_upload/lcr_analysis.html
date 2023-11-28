@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LCR Analysis</title>
+    <!-- Add your CSS styles here -->
+</head>
+<body>
+    {% include './navbar.html' %}
+    <h1>LCR Analysis</h1>
+    <form method="get">
+        {% csrf_token %}
+        
+        <label for="selected_country">Select Country:</label>
+        <select name="selected_country">
+            <option value="All">All</option>
+            {% for country in unique_countries %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        
+        <label for="selected_operator">Select Operator:</label>
+        <select name="selected_operator">
+            <option value="All">All</option>
+            {% for operator in unique_operators %}
+                <option value="{{ operator }}">{{ operator }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <button type="submit">Analyze</button>
+    </form>
+
+    <!-- Display LCR results if available -->
+    {% if lcr_results %}
+    <h2>LCR Results:</h2>
+    <table style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+            <tr style="border: 1px solid black;">
+                <th style="border: 1px solid black; padding: 5px;">CountryId</th>
+                <th style="border: 1px solid black; padding: 5px;">OperatorId</th>
+                <th style="border: 1px solid black; padding: 5px;">Most Appropriate</th>
+                <th style="border: 1px solid black; padding: 5px;">Appropriate 1</th>
+                <th style="border: 1px solid black; padding: 5px;">Appropriate 2</th>
+                <th style="border: 1px solid black; padding: 5px;">Appropriate 3</th>
+                <!-- Add more "Result" columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% if selected_country == 'All' and selected_operator == 'All' %}
+                {% for row in lcr_results %}
+                    <tr style="border: 1px solid black;">
+                        <td style="border: 1px solid black; padding: 5px;">{{ row.CountryId }}</td>
+                        <td style="border: 1px solid black; padding: 5px;">{{ row.OperatorId }}</td>
+                        <td style="border: 1px solid black; padding: 5px;">{{ row.Result }}</td>
+                        <td style="border: 1px solid black; padding: 5px;">{{ row.Result1 }}</td>
+                        <td style="border: 1px solid black; padding: 5px;">{{ row.Result2 }}</td>
+                        <td style="border: 1px solid black; padding: 5px;">{{ row.Result3 }}</td>
+                        <!-- Add more "Result" columns as needed -->
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for country, country_data in lcr_results.items %}
+                
+                <tr style="border: 1px solid black;">
+                    <td style="border: 1px solid black; padding: 5px;">{{ country }}</td>
+                    {% for vendor_data in country_data.vendors %}
+                        <td style="border: 1px solid black; padding: 5px;">{{ vendor_data.VendorId }}: {{vendor_data.Rate }}</td>
+                    {% endfor %}
+                    <!-- Add more "Result" columns as needed and populate them with data -->
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+    {% endif %}
+    
+    <!-- Display LCR Chart if available -->
+    {% if chart_image_path %}
+    <h2>LCR Chart:</h2>
+    <img src="{{ chart_image_path }}" alt="LCR Chart">
+    {% endif %}
+</body>
+</html>

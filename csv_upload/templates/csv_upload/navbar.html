@@ -1,0 +1,42 @@
+<!-- navbar.html -->
+
+<nav>
+    <ul class="navbar">
+        <li class="nav-item"><a href="{% url 'upload_csv' %}">Home</a></li>
+        <!-- Replace the '#' with actual URLs for Option 2 and Option 3 when you add them -->
+        <!-- <li class="nav-item"><a href="#">Option 2</a></li>
+        <li class="nav-item"><a href="#">Option 3</a></li> -->
+        <li><a href="{% url 'lcr_analysis' %}">LCR Analysis</a></li>
+        <li class="nav-item right"><a href="{% url 'logout' %}">Logout</a></li> <!-- Added logout link on the right -->
+    </ul>
+</nav>
+
+<style>
+    /* Style the navigation bar */
+    .navbar {
+        background-color: #FF0000; /* Red background color */
+        overflow: hidden;
+        list-style-type: none; /* Remove bullet points from the list */
+        padding: 0; /* Remove default padding */
+        display: flex; /* Make the list items a flex container */
+        justify-content: flex-end; /* Align items to the right (end) */
+    }
+
+    /* Style the navigation bar links */
+    .navbar a {
+        color: white; /* Text color */
+        padding: 14px 16px; /* Add padding to the links */
+        text-decoration: none; /* Remove underlines from links */
+    }
+
+    /* Change color of navigation bar links on hover */
+    .navbar a:hover {
+        background-color: #FF3333; /* Darker red background color on hover */
+        color: white; /* Change text color on hover */
+    }
+
+    /* Style the logout link on the right */
+    .right {
+        margin-left: auto; /* Push the logout link to the right by aligning it to the end */
+    }
+</style>
